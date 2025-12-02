@@ -6,8 +6,7 @@ import (
 )
 
 type Config struct {
-	TestA string `yaml:"testA"`
-	TestB string `yaml:"testB"`
+	HttpTimeoutSeconds string `yaml:"httpTimeoutSeconds"`
 }
 
 func Load(path string) (*Config, error) {

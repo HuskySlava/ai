@@ -1,15 +1,32 @@
 package main
 
 import (
-	"ai/internal/config"
-	"fmt"
+	"ai/internal/provider/ai"
+	"context"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+	"time"
 )
 
 func main() {
-	cfg, err := config.Load("./config.yaml")
+	// Load environment variables
+	err := godotenv.Load()
 	if err != nil {
-		fmt.Println("err", err)
-		return
+		log.Fatal("Error reading environment variables")
 	}
-	fmt.Printf("%s", cfg)
+
+	gemini := ai.NewGemini(os.Getenv("GEMINI_API_KEY"), "lol")
+
+	bg := context.Background()
+	ctx, cancel := context.WithTimeout(bg, 30*time.Second)
+
+	defer cancel()
+
+	result, err := gemini.Rewrite(ctx, "Hello")
+	if err != nil {
+		log.Fatal("AI Failer", err)
+	}
+
+	log.Println(result)
 }
