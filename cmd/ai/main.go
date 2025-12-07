@@ -4,11 +4,57 @@ import (
 	"ai/internal/config"
 	"ai/internal/provider/ai"
 	"context"
+	"flag"
+	"fmt"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"time"
 )
+
+type CMDFlags struct {
+	isRewrite   bool
+	isTranslate bool
+	model       string
+	text        string
+}
+
+func setFlags() *CMDFlags {
+	flags := &CMDFlags{}
+
+	flag.BoolVar(&flags.isRewrite, "rewrite", false, "AI rewrite function flag")
+	flag.BoolVar(&flags.isRewrite, "r", false, "AI rewrite function flag (shorthand)")
+
+	flag.BoolVar(&flags.isTranslate, "translate", false, "AI translate function flag")
+	flag.BoolVar(&flags.isTranslate, "t", false, "AI translate function flag (shorthand)")
+
+	flag.StringVar(&flags.model, "model", "", "AI model provider flag")
+	flag.StringVar(&flags.model, "m", "", "AI model provider flag (shorthand)")
+
+	flag.StringVar(&flags.text, "prompt", "", "AI prompt")
+	flag.StringVar(&flags.text, "p", "", "AI prompt (shorthand)")
+
+	flag.Parse()
+
+	return flags
+}
+
+func runGemini(gemini *ai.GeminiProvider, ctx context.Context, flags *CMDFlags) (string, error) {
+	var (
+		res string
+		err error
+	)
+
+	if flags.isRewrite {
+		res, err = gemini.Rewrite(ctx, flags.text)
+	} else if flags.isTranslate {
+		res, err = gemini.Translate(ctx, flags.text)
+	} else {
+		log.Println("Check selected action")
+	}
+
+	return res, err
+}
 
 func main() {
 	// Load environment variables
@@ -20,20 +66,31 @@ func main() {
 	// Load config
 	cfg, err := config.Load("./config.yaml")
 	if err != nil {
-		log.Fatal("Error loading config")
+		log.Fatalf("Error loading config: %v", err)
 	}
 
-	gemini := ai.NewGemini(os.Getenv("GEMINI_API_KEY"), "lol")
+	// Set CMD flags
+	cmdFlags := setFlags()
 
-	bg := context.Background()
-	ctx, cancel := context.WithTimeout(bg, time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
+	if cmdFlags.text == "" {
+		log.Println("Missing prompt")
+		return
+	}
 
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
 	defer cancel()
 
-	result, err := gemini.Rewrite(ctx, "Hello")
-	if err != nil {
-		log.Fatal("AI Failer", err)
+	switch cmdFlags.model {
+	case "gemini":
+		gemini := ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
+		res, err := runGemini(gemini, ctx, cmdFlags)
+		if err != nil {
+			log.Println("Error", err)
+			return
+		}
+		fmt.Println(res)
+	default:
+		log.Println("Model not implemented")
 	}
 
-	log.Println(result)
 }

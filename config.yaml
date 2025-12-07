@@ -1,1 +1,9 @@
 httpTimeoutSeconds: 30
+
+models:
+  gemini: gemini-2.5-flash
+  openai: test-o1
+
+prompts:
+  rewrite: "Rewrite the following text, improve it and fix grammar, return only the result:"
+  translate: "Translate the following text to english, return only the result:"
