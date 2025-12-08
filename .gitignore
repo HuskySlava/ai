@@ -1,1 +1,8 @@
+# Enviromet
 .env
+
+# IDE
+.idea
+
+# Go build output
+/bin/
