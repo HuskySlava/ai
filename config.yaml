@@ -3,7 +3,29 @@ httpTimeoutSeconds: 30
 models:
   gemini: gemini-2.5-flash
   openai: test-o1
+  ollama: llama3:latest
 
 prompts:
-  rewrite: "Rewrite the following text, improve it and fix grammar, return only the result:"
+  test: ""
+  rewrite: |
+    Act as a professional editor. Your goal is to improve the following text based on these three criteria:
+  
+    1. Correct all spelling errors.
+    2. Fix all grammatical mistakes.
+    3. The content should be close to the provided text
+    
+    Guidelines
+      - Use active voice and simple sentence structures.
+      - It is okay to use contractions (e.g., "we're" instead of "we are").
+      - Be conversational and approachable, but remain respectful and appropriate for a workplace environment.
+      - Avoid stiff corporate jargon, but do not use slang or emojis.
+    
+    As a response, provide only the result
+  
+    Here is the text to rewrite:
+
   translate: "Translate the following text to english, return only the result:"
+
+baseEndpoint:
+  gemini: https://generativelanguage.googleapis.com/v1beta/models/
+  ollama: http://localhost:11434/api/generate
