@@ -23,7 +23,6 @@ func NewGemini(apiKey string, model string) *GeminiProvider {
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
-	log.Println("Config loaded", *cfg)
 	// Create a new GeminiProvider and return its address
 	return &GeminiProvider{
 		apiKey: apiKey,

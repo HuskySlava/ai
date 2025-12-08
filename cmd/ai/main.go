@@ -39,35 +39,18 @@ func setFlags() *CMDFlags {
 	return flags
 }
 
-func runGemini(gemini *ai.GeminiProvider, ctx context.Context, flags *CMDFlags) (string, error) {
+func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, error) {
 	var (
 		res string
 		err error
 	)
 
 	if flags.isRewrite {
-		res, err = gemini.Rewrite(ctx, flags.text)
+		res, err = model.Rewrite(ctx, flags.text)
 	} else if flags.isTranslate {
-		res, err = gemini.Translate(ctx, flags.text)
+		res, err = model.Translate(ctx, flags.text)
 	} else {
-		res, err = gemini.Test(ctx, flags.text)
-	}
-
-	return res, err
-}
-
-func runOllama(ollama *ai.OllamaProvider, ctx context.Context, flags *CMDFlags) (string, error) {
-	var (
-		res string
-		err error
-	)
-
-	if flags.isRewrite {
-		res, err = ollama.Rewrite(ctx, flags.text)
-	} else if flags.isTranslate {
-		res, err = ollama.Translate(ctx, flags.text)
-	} else {
-		res, err = ollama.Test(ctx, flags.text)
+		res, err = model.Test(ctx, flags.text)
 	}
 
 	return res, err
@@ -97,25 +80,23 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
 	defer cancel()
 
+	var model ai.Provider
+
 	switch cmdFlags.model {
 	case "gemini":
-		gemini := ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
-		res, err := runGemini(gemini, ctx, cmdFlags)
-		if err != nil {
-			log.Println("Error", err)
-			return
-		}
-		fmt.Println(res)
-	case "ollama", "":
-		ollama := ai.NewOllama(cfg.Models.Ollama)
-		res, err := runOllama(ollama, ctx, cmdFlags)
-		if err != nil {
-			log.Println("Error", err)
-			return
-		}
-		fmt.Println(res)
+		model = ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
+	case "ollama", "": // Defaults to Ollama if no model flag
+		model = ai.NewOllama(cfg.Models.Ollama)
 	default:
-		log.Println("Model not implemented")
+		log.Fatal("Model not implemented")
 	}
+
+	res, err := runModel(model, ctx, cmdFlags)
+	if err != nil {
+		log.Println("Error", err)
+		return
+	}
+
+	fmt.Println("\n" + res + "\n")
 
 }
