@@ -17,7 +17,7 @@ type OllamaProvider struct {
 }
 
 func NewOllama(model string) *OllamaProvider {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -29,7 +29,7 @@ func NewOllama(model string) *OllamaProvider {
 }
 
 func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -38,7 +38,7 @@ func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, erro
 }
 
 func (p *OllamaProvider) Translate(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -65,7 +65,7 @@ type ollamaResponse struct {
 }
 
 func (p *OllamaProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}

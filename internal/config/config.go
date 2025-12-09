@@ -2,7 +2,9 @@ package config
 
 import (
 	"gopkg.in/yaml.v3"
+	"log"
 	"os"
+	"path/filepath"
 )
 
 type Models struct {
@@ -29,14 +31,35 @@ type Config struct {
 	BaseEndpoints      BaseEndpoints `yaml:"baseEndpoint"`
 }
 
-func Load(path string) (*Config, error) {
-	data, err := os.ReadFile(path)
+func Load() (*Config, error) {
+	exePath, err := os.Executable()
 	if err != nil {
+		log.Println("Error getting executable path:", err)
 		return nil, err
 	}
 
-	var cfg Config
-	err = yaml.Unmarshal(data, &cfg)
+	exeDir := filepath.Dir(exePath)
+	path := filepath.Join(exeDir, "config.yaml")
 
-	return &cfg, err
+	// Try to load config.yaml relative to the binary
+	res, err := os.ReadFile(path)
+	if err != nil {
+		log.Println("Error reading config from binary dir:", err)
+		log.Println("Trying to read the config from current directory (pwd)")
+
+		// Fallback to read config from pwd (for dev with go run ...)
+		res, err = os.ReadFile("config.yaml")
+		if err != nil {
+			log.Println("Error reading config from pwd:", err)
+			return nil, err
+		}
+	}
+
+	var cfg *Config
+	if err := yaml.Unmarshal(res, &cfg); err != nil {
+		log.Println("Error reading YAML:", err)
+		return nil, err
+	}
+
+	return cfg, nil
 }

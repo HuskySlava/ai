@@ -57,14 +57,14 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 }
 
 func main() {
-	// Load environment variables
+	// Load environment variables for (dev only)
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error reading environment variables")
+		log.Println("Error reading .env file")
 	}
 
 	// Load config
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)
 	}

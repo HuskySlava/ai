@@ -19,7 +19,7 @@ type GeminiProvider struct {
 }
 
 func NewGemini(apiKey string, model string) *GeminiProvider {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -32,7 +32,7 @@ func NewGemini(apiKey string, model string) *GeminiProvider {
 }
 
 func (p *GeminiProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -41,7 +41,7 @@ func (p *GeminiProvider) Rewrite(ctx context.Context, text string) (string, erro
 }
 
 func (p *GeminiProvider) Translate(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
@@ -74,7 +74,7 @@ type geminiResponse struct {
 }
 
 func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
-	cfg, err := config.Load("./config.yaml")
+	cfg, err := config.Load()
 	if err != nil {
 		log.Fatal("Error reading config", err)
 	}
