@@ -6,7 +6,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -14,35 +13,29 @@ import (
 type OllamaProvider struct {
 	model  string
 	client *http.Client
+	cfg    *config.Config
 }
 
-func NewOllama(model string) *OllamaProvider {
+func NewOllama(model string) (*OllamaProvider, error) {
 	cfg, err := config.Load()
 	if err != nil {
-		log.Fatal("Error reading config", err)
+		return nil, err
 	}
 
 	return &OllamaProvider{
 		model:  model,
 		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-	}
+		cfg:    cfg,
+	}, nil
 }
 
 func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
-	prompt := cfg.Prompts.Rewrite + " " + text
+	prompt := p.cfg.Prompts.Rewrite + " " + text
 	return p.sendRequest(ctx, prompt)
 }
 
 func (p *OllamaProvider) Translate(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
-	prompt := cfg.Prompts.Translate + " " + text
+	prompt := p.cfg.Prompts.Translate + " " + text
 	return p.sendRequest(ctx, prompt)
 }
 
@@ -65,15 +58,11 @@ type ollamaResponse struct {
 }
 
 func (p *OllamaProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
 
-	url := cfg.BaseEndpoints.Ollama
+	url := p.cfg.BaseEndpoints.Ollama
 
 	payload := ollamaRequest{
-		Model:  cfg.Models.Ollama,
+		Model:  p.cfg.Models.Ollama,
 		Prompt: prompt,
 		Stream: false,
 	}

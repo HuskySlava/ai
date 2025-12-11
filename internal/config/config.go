@@ -9,7 +9,7 @@ import (
 
 type Models struct {
 	Gemini string `yaml:"gemini"`
-	OpenAI string `yaml:"openai"`
+	Openai string `yaml:"openai"`
 	Ollama string `yaml:"ollama"`
 }
 
@@ -22,6 +22,7 @@ type Prompts struct {
 type BaseEndpoints struct {
 	Gemini string `yaml:"gemini"`
 	Ollama string `yaml:"ollama"`
+	Openai string `yaml:"openai"`
 }
 
 type Config struct {

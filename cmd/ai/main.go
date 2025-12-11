@@ -84,16 +84,22 @@ func main() {
 
 	switch cmdFlags.model {
 	case "gemini":
-		model = ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
+		model, err = ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
+	case "openai":
+		model, err = ai.NewOpenai(os.Getenv("OPENAI_API_KEY"), cfg.Models.Openai)
 	case "ollama", "": // Defaults to Ollama if no model flag
-		model = ai.NewOllama(cfg.Models.Ollama)
+		model, err = ai.NewOllama(cfg.Models.Ollama)
 	default:
 		log.Fatal("Model not implemented")
 	}
 
+	if err != nil {
+		log.Fatal("Error", err)
+	}
+
 	res, err := runModel(model, ctx, cmdFlags)
 	if err != nil {
-		log.Println("Error", err)
+		log.Fatal("Error", err)
 		return
 	}
 

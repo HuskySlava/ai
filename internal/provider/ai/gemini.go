@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -16,36 +15,30 @@ type GeminiProvider struct {
 	apiKey string
 	model  string
 	client *http.Client
+	cfg    *config.Config
 }
 
-func NewGemini(apiKey string, model string) *GeminiProvider {
+func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
 	cfg, err := config.Load()
 	if err != nil {
-		log.Fatal("Error reading config", err)
+		return nil, err
 	}
 	// Create a new GeminiProvider and return its address
 	return &GeminiProvider{
 		apiKey: apiKey,
 		model:  model,
 		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-	}
+		cfg:    cfg,
+	}, nil
 }
 
 func (p *GeminiProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
-	prompt := cfg.Prompts.Rewrite + " " + text
+	prompt := p.cfg.Prompts.Rewrite + " " + text
 	return p.sendRequest(ctx, prompt)
 }
 
 func (p *GeminiProvider) Translate(ctx context.Context, text string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
-	prompt := cfg.Prompts.Translate + " " + text
+	prompt := p.cfg.Prompts.Translate + " " + text
 	return p.sendRequest(ctx, prompt)
 }
 
@@ -74,15 +67,10 @@ type geminiResponse struct {
 }
 
 func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		log.Fatal("Error reading config", err)
-	}
-
 	// Endpoint construction
 	// Example: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=XYZ
 	url := fmt.Sprintf(
-		cfg.BaseEndpoints.Gemini+"%s:generateContent?key=%s",
+		p.cfg.BaseEndpoints.Gemini+"%s:generateContent?key=%s",
 		p.model,
 		p.apiKey,
 	)
