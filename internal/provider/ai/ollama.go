@@ -31,17 +31,17 @@ func NewOllama(model string) (*OllamaProvider, error) {
 
 func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *OllamaProvider) Translate(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Translate + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *OllamaProvider) Test(ctx context.Context, text string) (string, error) {
 	prompt := text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 type ollamaRequest struct {
@@ -57,7 +57,7 @@ type ollamaResponse struct {
 	Done      bool   `json:"done"`
 }
 
-func (p *OllamaProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *OllamaProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
 
 	url := p.cfg.BaseEndpoints.Ollama
 

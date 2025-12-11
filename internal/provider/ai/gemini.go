@@ -34,17 +34,17 @@ func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
 
 func (p *GeminiProvider) Rewrite(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *GeminiProvider) Translate(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Translate + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *GeminiProvider) Test(ctx context.Context, text string) (string, error) {
 	prompt := text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 type geminiRequest struct {
@@ -66,7 +66,7 @@ type geminiResponse struct {
 	} `json:"candidates"`
 }
 
-func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *GeminiProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
 	// Endpoint construction
 	// Example: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=XYZ
 	url := fmt.Sprintf(

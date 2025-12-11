@@ -34,16 +34,16 @@ func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
 
 func (p *OpenaiProvider) Rewrite(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *OpenaiProvider) Translate(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Translate + " " + text
-	return p.sendRequest(ctx, prompt)
+	return p.SendRequest(ctx, prompt)
 }
 
 func (p *OpenaiProvider) Test(ctx context.Context, text string) (string, error) {
-	return p.sendRequest(ctx, text)
+	return p.SendRequest(ctx, text)
 }
 
 type Message struct {
@@ -71,7 +71,7 @@ type ChatResponse struct {
 	Choices []ChatChoice `json:"choices"`
 }
 
-func (p *OpenaiProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *OpenaiProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
 
 	payload := ChatRequest{
 		Model: p.model,
