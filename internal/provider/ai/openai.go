@@ -34,16 +34,20 @@ func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
 
 func (p *OpenaiProvider) Rewrite(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.SendRequest(ctx, prompt)
+	return p.doSendRequest(ctx, prompt, "You are a professional text editor.")
 }
 
 func (p *OpenaiProvider) Translate(ctx context.Context, text string) (string, error) {
 	prompt := p.cfg.Prompts.Translate + " " + text
-	return p.SendRequest(ctx, prompt)
+	return p.doSendRequest(ctx, prompt, "You are a professional translator.")
 }
 
 func (p *OpenaiProvider) Test(ctx context.Context, text string) (string, error) {
-	return p.SendRequest(ctx, text)
+	return p.doSendRequest(ctx, text, "You are a concise assistant.")
+}
+
+func (p *OpenaiProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
+	return p.doSendRequest(ctx, prompt, "You are a concise assistant.")
 }
 
 type Message struct {
@@ -71,12 +75,12 @@ type ChatResponse struct {
 	Choices []ChatChoice `json:"choices"`
 }
 
-func (p *OpenaiProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *OpenaiProvider) doSendRequest(ctx context.Context, prompt string, systemRole string) (string, error) {
 
 	payload := ChatRequest{
 		Model: p.model,
 		Messages: []Message{
-			{Role: "system", Content: "You are a concise assistant."},
+			{Role: "system", Content: systemRole},
 			{Role: "user", Content: prompt},
 		},
 		Temperature: 1,
