@@ -28,11 +28,11 @@ func setFlags() *CMDFlags {
 	flag.BoolVar(&flags.isTranslate, "translate", false, "AI translate function flag")
 	flag.BoolVar(&flags.isTranslate, "t", false, "AI translate function flag (shorthand)")
 
-	flag.StringVar(&flags.model, "model", "", "AI model provider flag")
-	flag.StringVar(&flags.model, "m", "", "AI model provider flag (shorthand)")
+	flag.StringVar(&flags.model, "provider", "", "AI model provider flag")
+	flag.StringVar(&flags.model, "p", "", "AI model provider flag (shorthand)")
 
-	flag.StringVar(&flags.text, "prompt", "", "AI prompt")
-	flag.StringVar(&flags.text, "p", "", "AI prompt (shorthand)")
+	flag.StringVar(&flags.text, "input", "", "AI prompt")
+	flag.StringVar(&flags.text, "i", "", "AI prompt (shorthand)")
 
 	flag.Parse()
 
