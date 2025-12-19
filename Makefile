@@ -25,17 +25,17 @@ build:
 # Build for MacOS
 build-macos:
 	@echo "Building $(BINARY_NAME) for MacOS/arm64..."
-	GOOS=darwin GOARCH=arm64 go build -o $(BINARY_NAME) ./cmd/
+	GOOS=darwin GOARCH=arm64 go build -o $(BINARY_NAME) ./cmd/ai
 
 # Build for Linux
 build-linux:
 	@echo "Building $(BINARY_NAME) for linux/amd64..."
-	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME) ./cmd/
+	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME) ./cmd/ai
 
 # Build for Windows
 build-windows:
 	@echo "Building $(BINARY_NAME).exe for windows/amd64..."
-	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME).exe ./cmd/
+	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME).exe ./cmd/ai
 
 # Move binary to target folder
 move:
