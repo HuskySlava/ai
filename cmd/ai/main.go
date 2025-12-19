@@ -17,6 +17,7 @@ type CMDFlags struct {
 	isTranslate bool
 	model       string
 	text        string
+	language    string
 }
 
 func setFlags() *CMDFlags {
@@ -34,6 +35,9 @@ func setFlags() *CMDFlags {
 	flag.StringVar(&flags.text, "input", "", "AI prompt")
 	flag.StringVar(&flags.text, "i", "", "AI prompt (shorthand)")
 
+	flag.StringVar(&flags.language, "language", "", "Translation target language")
+	flag.StringVar(&flags.language, "l", "", "Translation target language (shorthand)")
+
 	flag.Parse()
 
 	return flags
@@ -48,7 +52,13 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 	if flags.isRewrite {
 		res, err = model.Rewrite(ctx, flags.text)
 	} else if flags.isTranslate {
-		res, err = model.Translate(ctx, flags.text)
+
+		toLanguage := flags.language
+		if toLanguage == "" {
+			toLanguage = "English"
+		}
+
+		res, err = model.Translate(ctx, flags.text, toLanguage)
 	} else {
 		res, err = model.Test(ctx, flags.text)
 	}

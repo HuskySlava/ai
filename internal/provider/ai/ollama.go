@@ -34,8 +34,9 @@ func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, erro
 	return p.SendRequest(ctx, prompt)
 }
 
-func (p *OllamaProvider) Translate(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Translate + " " + text
+func (p *OllamaProvider) Translate(ctx context.Context, text string, toLanguage string) (string, error) {
+	prompt := fmt.Sprintf(p.cfg.Prompts.Translate, toLanguage) // Inject target language to config prompt
+	prompt += " " + text                                       // Add text to be translated
 	return p.SendRequest(ctx, prompt)
 }
 

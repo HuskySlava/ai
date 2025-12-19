@@ -26,7 +26,7 @@ prompts:
     
     Text to edit:
 
-  translate: "Translate the following text to english, return only the result:"
+  translate: "Translate the following text to %s, return only the result: "
 
 baseEndpoint:
   gemini: https://generativelanguage.googleapis.com/v1beta/models/
