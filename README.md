@@ -53,29 +53,36 @@ models:
   ollama: llama3:latest # Local model, download required https://ollama.com/
 
 # Defines the prompts sent to the AI for rewriting, translating, or testing.
+httpTimeoutSeconds: 30
+
+models:
+  gemini: gemini-2.5-flash
+  openai: gpt-5-nano
+  ollama: llama3:latest
+
 prompts:
   test: ""
   rewrite: |
-    Act as a professional editor. Your goal is to improve the following text based on these three criteria:
+    You are a professional editor. Improve the following text according to these instructions:
 
-    1. Correct all spelling errors.
-    2. Fix all grammatical mistakes.
-    3. The content should be close to the provided text
+    Objectives:
+    1. Correct all spelling and punctuation errors.
+    2. Fix all grammatical and syntactical issues.
+    3. Keep the meaning and tone as close as possible to the original text.
 
-    Guidelines
-      - Use active voice and simple sentence structures.
-      - It is okay to use contractions (e.g., "we're" instead of "we are").
-      - Be conversational and approachable, but remain respectful and appropriate for a workplace environment.
-      - Avoid stiff corporate jargon, but do not use slang or emojis.
+    Style Guidelines
+      - Use active voice and clear, simple sentences.
+      - Contractions (e.g., “we’re,” “they’re”) are allowed.
+      - Maintain a conversational, professional tone suitable for the workplace.
+      - Avoid slang, emojis, and overly formal corporate language.
 
-    As a response, provide only the result
+    Output Rules
+     - Return only the edited text, with no explanations, comments, or formatting other than plain text.
 
-    Here is the text to rewrite:
+    Text to edit:
 
-  translate: "Translate the following text to english, return only the result:"
-  
-# Specifies API base URLs for each AI provider.
-# Endpoints should point to the live API or local test servers.
+  translate: "Translate the following text to %s, return only the result: "
+
 baseEndpoint:
   gemini: https://generativelanguage.googleapis.com/v1beta/models/
   ollama: http://localhost:11434/api/generate
