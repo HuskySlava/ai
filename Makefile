@@ -1,51 +1,39 @@
 # Makefile
 
-# Binary name
 BINARY_NAME=ai
-
-# Config name
 CONFIG_NAME=config.yaml
-
-# Output directory
 BIN_DIR=./bin
 
-# Go build flags
-GOOS=darwin
-GOARCH=arm64
+# Default OS/ARCH
+GOOS ?= darwin
+GOARCH ?= arm64
 
-# Default target
+.PHONY: all build build-macos build-linux build-windows move clean
+
 all: build move
 
-# Build the Go binary for macOS
 build:
-	@echo "Building $(BINARY_NAME) for macOS..."
+	@echo "Building $(BINARY_NAME) for $(GOOS)/$(GOARCH)..."
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o $(BINARY_NAME) ./cmd/ai
 
-
-# Build for MacOS
 build-macos:
-	@echo "Building $(BINARY_NAME) for MacOS/arm64..."
-	GOOS=darwin GOARCH=arm64 go build -o $(BINARY_NAME) ./cmd/ai
+	$(MAKE) build GOOS=darwin GOARCH=arm64
 
-# Build for Linux
 build-linux:
-	@echo "Building $(BINARY_NAME) for linux/amd64..."
-	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME) ./cmd/ai
+	$(MAKE) build GOOS=linux GOARCH=amd64
 
-# Build for Windows
 build-windows:
-	@echo "Building $(BINARY_NAME).exe for windows/amd64..."
-	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME).exe ./cmd/ai
+	$(MAKE) build GOOS=windows GOARCH=amd64
+	mv -f $(BINARY_NAME) $(BINARY_NAME).exe
 
-# Move binary to target folder
 move:
 	@echo "Moving binary to $(BIN_DIR)..."
 	mkdir -p $(BIN_DIR)
-	mv -f $(BINARY_NAME) $(BIN_DIR)/
+	if [ -f $(BINARY_NAME) ]; then mv -f $(BINARY_NAME) $(BIN_DIR)/; fi
+	if [ -f $(BINARY_NAME).exe ]; then mv -f $(BINARY_NAME).exe $(BIN_DIR)/; fi
 	@echo "Moving config to $(BIN_DIR)..."
 	cp -f $(CONFIG_NAME) $(BIN_DIR)/
 
-# Clean build artifacts
 clean:
 	@echo "Cleaning..."
-	rm -rf $(BIN_DIR)/$(BINARY_NAME)
+	rm -rf $(BIN_DIR)/*
