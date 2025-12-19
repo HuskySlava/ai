@@ -7,11 +7,12 @@
 3. General prompts
 
 | Flag          | Shorthand | Description                                |
-| ------------- | --------- | ------------------------------------------ |
+|---------------|-----------|--------------------------------------------|
 | `--rewrite`   | `-r`      | Rewrite text                               |
 | `--translate` | `-t`      | Translate text                             |
-| `--model`     | `-m`      | AI provider (`ollama`, `openai`, `gemini`) |
-| `--prompt`    | `-p`      | Input text or prompt                       |
+| `--language`  | `-l`      | Translate target language                  |
+| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`) |
+| `--input`     | `-i`      | Input text or prompt                       |
 
 > If --model is not set → defaults to Ollama.
 
