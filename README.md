@@ -23,15 +23,15 @@
 
 * Rewrite
 ```bash
-ai -r -m openai -p "A sentence to rewrite"
+ai -r -p openai -i "A sentence to rewrite"
 ```
 * Translate
 ```bash
-ai -t -m gemini -p "翻訳する行"
+ai -t -p gemini -i "翻訳する行"
 ```
-* Test
+* General Prompt
 ```bash
-ai -m ollama -p="Summarize: Go concurrency"
+ai -p ollama -i="Summarize: Go concurrency"
 ```
 
 ### Required Environment Variables
