@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+const defaultTargetLanguage = "English"
+
 type CMDFlags struct {
 	isRewrite   bool
 	isTranslate bool
@@ -74,7 +76,7 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 
 		toLanguage := flags.language
 		if toLanguage == "" {
-			toLanguage = "English"
+			toLanguage = defaultTargetLanguage
 		}
 
 		res, err = model.Translate(ctx, flags.input, toLanguage)
