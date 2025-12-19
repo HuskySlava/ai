@@ -15,30 +15,49 @@ import (
 type CMDFlags struct {
 	isRewrite   bool
 	isTranslate bool
-	model       string
-	text        string
+	provider    string
+	input       string
 	language    string
 }
 
 func setFlags() *CMDFlags {
 	flags := &CMDFlags{}
 
-	flag.BoolVar(&flags.isRewrite, "rewrite", false, "AI rewrite function flag")
-	flag.BoolVar(&flags.isRewrite, "r", false, "AI rewrite function flag (shorthand)")
+	var rewrite, r bool
+	var translate, t bool
+	var provider, p string
+	var input, i string
+	var language, l string
 
-	flag.BoolVar(&flags.isTranslate, "translate", false, "AI translate function flag")
-	flag.BoolVar(&flags.isTranslate, "t", false, "AI translate function flag (shorthand)")
+	flag.BoolVar(&rewrite, "rewrite", false, "AI rewrite function flag")
+	flag.BoolVar(&r, "r", false, "AI rewrite function flag (shorthand)")
 
-	flag.StringVar(&flags.model, "provider", "", "AI model provider flag")
-	flag.StringVar(&flags.model, "p", "", "AI model provider flag (shorthand)")
+	flag.BoolVar(&translate, "translate", false, "AI translate function flag")
+	flag.BoolVar(&t, "t", false, "AI translate function flag (shorthand)")
 
-	flag.StringVar(&flags.text, "input", "", "AI prompt")
-	flag.StringVar(&flags.text, "i", "", "AI prompt (shorthand)")
+	flag.StringVar(&provider, "provider", "", "AI model provider flag")
+	flag.StringVar(&p, "p", "", "AI model provider flag (shorthand)")
 
-	flag.StringVar(&flags.language, "language", "", "Translation target language")
-	flag.StringVar(&flags.language, "l", "", "Translation target language (shorthand)")
+	flag.StringVar(&input, "input", "", "AI prompt")
+	flag.StringVar(&i, "i", "", "AI prompt (shorthand)")
+
+	flag.StringVar(&language, "language", "", "Translation target language")
+	flag.StringVar(&l, "l", "", "Translation target language (shorthand)")
 
 	flag.Parse()
+
+	firstNonEmpty := func(a, b string) string {
+		if a != "" {
+			return a
+		}
+		return b
+	}
+
+	flags.isRewrite = rewrite || r
+	flags.isTranslate = translate || t
+	flags.provider = firstNonEmpty(provider, p)
+	flags.input = firstNonEmpty(input, i)
+	flags.language = firstNonEmpty(language, l)
 
 	return flags
 }
@@ -50,7 +69,7 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 	)
 
 	if flags.isRewrite {
-		res, err = model.Rewrite(ctx, flags.text)
+		res, err = model.Rewrite(ctx, flags.input)
 	} else if flags.isTranslate {
 
 		toLanguage := flags.language
@@ -58,9 +77,9 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 			toLanguage = "English"
 		}
 
-		res, err = model.Translate(ctx, flags.text, toLanguage)
+		res, err = model.Translate(ctx, flags.input, toLanguage)
 	} else {
-		res, err = model.Test(ctx, flags.text)
+		res, err = model.Test(ctx, flags.input)
 	}
 
 	return res, err
@@ -82,7 +101,7 @@ func main() {
 	// Set CMD flags
 	cmdFlags := setFlags()
 
-	if cmdFlags.text == "" {
+	if cmdFlags.input == "" {
 		log.Println("Missing prompt")
 		return
 	}
@@ -92,7 +111,7 @@ func main() {
 
 	var model ai.Provider
 
-	switch cmdFlags.model {
+	switch cmdFlags.provider {
 	case "gemini":
 		model, err = ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
 	case "openai":
