@@ -111,19 +111,19 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
 	defer cancel()
 
-	var model ai.Provider
+	models := map[string]func() (ai.Provider, error){
+		"gemini": func() (ai.Provider, error) { return ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini) },
+		"openai": func() (ai.Provider, error) { return ai.NewOpenai(os.Getenv("OPENAI_API_KEY"), cfg.Models.Openai) },
+		"ollama": func() (ai.Provider, error) { return ai.NewOllama(cfg.Models.Ollama) },
+		"":       func() (ai.Provider, error) { return ai.NewOllama(cfg.Models.Ollama) },
+	}
 
-	switch cmdFlags.provider {
-	case "gemini":
-		model, err = ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini)
-	case "openai":
-		model, err = ai.NewOpenai(os.Getenv("OPENAI_API_KEY"), cfg.Models.Openai)
-	case "ollama", "": // Defaults to Ollama if no model flag
-		model, err = ai.NewOllama(cfg.Models.Ollama)
-	default:
+	newModel, ok := models[cmdFlags.provider]
+	if !ok {
 		log.Fatal("Model not implemented")
 	}
 
+	model, err := newModel()
 	if err != nil {
 		log.Fatal("Error", err)
 	}
