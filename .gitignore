@@ -8,3 +8,4 @@ tmp
 
 # Go build output
 /bin/
+/releases/
