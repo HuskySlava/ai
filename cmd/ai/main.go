@@ -125,12 +125,12 @@ func main() {
 
 	model, err := newModel()
 	if err != nil {
-		log.Fatal("Error", err)
+		log.Fatalf("Error creating model: %v", err)
 	}
 
 	res, err := runModel(model, ctx, cmdFlags)
 	if err != nil {
-		log.Fatal("Error", err)
+		log.Fatalf("Error running model: %v", err)
 		return
 	}
 
