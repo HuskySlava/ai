@@ -3,7 +3,7 @@ httpTimeoutSeconds: 30
 models:
   gemini: gemini-2.5-flash
   openai: gpt-5-nano
-  ollama: llama3:latest
+  ollama: mistral-small:latest
 
 prompts:
   test: ""

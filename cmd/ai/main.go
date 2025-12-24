@@ -6,6 +6,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/atotto/clipboard"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -17,6 +18,7 @@ const defaultTargetLanguage = "English"
 type CMDFlags struct {
 	isRewrite   bool
 	isTranslate bool
+	isClipboard bool
 	provider    string
 	input       string
 	language    string
@@ -27,6 +29,7 @@ func setFlags() *CMDFlags {
 
 	var rewrite, r bool
 	var translate, t bool
+	var copyClipboard, c bool
 	var provider, p string
 	var input, i string
 	var language, l string
@@ -36,6 +39,9 @@ func setFlags() *CMDFlags {
 
 	flag.BoolVar(&translate, "translate", false, "AI translate function flag")
 	flag.BoolVar(&t, "t", false, "AI translate function flag (shorthand)")
+
+	flag.BoolVar(&copyClipboard, "clipboard", false, "Copy result to clipboard automatically")
+	flag.BoolVar(&c, "c", false, "Copy result to clipboard automatically (shorthand)")
 
 	flag.StringVar(&provider, "provider", "", "AI model provider flag")
 	flag.StringVar(&p, "p", "", "AI model provider flag (shorthand)")
@@ -57,6 +63,7 @@ func setFlags() *CMDFlags {
 
 	flags.isRewrite = rewrite || r
 	flags.isTranslate = translate || t
+	flags.isClipboard = copyClipboard || c
 	flags.provider = firstNonEmpty(provider, p)
 	flags.input = firstNonEmpty(input, i)
 	flags.language = firstNonEmpty(language, l)
@@ -132,6 +139,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error running model: %v", err)
 		return
+	}
+
+	err = clipboard.WriteAll(res)
+	if err != nil {
+		fmt.Println("Error copying to clipboard:", err)
 	}
 
 	fmt.Println("\n" + res + "\n")
