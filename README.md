@@ -16,6 +16,7 @@
 | `--language`  | `-l`      | Translate target language                  |
 | `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`) |
 | `--input`     | `-i`      | Input text or prompt                       |
+| `--clipboard` | `-c`      | Copy result to clipboard automatically     |
 
 > If --model is not set → defaults to Ollama.
 
@@ -25,9 +26,9 @@
 ```bash
 ai -r -p openai -i "A sentence to rewrite"
 ```
-* Translate
+* Translate + Copy result to clipboard
 ```bash
-ai -t -p gemini -i "翻訳する行"
+ai -t -p gemini -c -i "翻訳する行"
 ```
 * General Prompt
 ```bash
