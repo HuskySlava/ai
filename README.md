@@ -16,6 +16,7 @@
 | `--language`  | `-l`      | Translate target language                  |
 | `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`) |
 | `--input`     | `-i`      | Input text or prompt                       |
+| `--clipboard` | `-c`      | Copy result to clipboard automatically     |
 
 > If --model is not set → defaults to Ollama.
 
