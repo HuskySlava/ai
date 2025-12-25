@@ -26,9 +26,9 @@
 ```bash
 ai -r -p openai -i "A sentence to rewrite"
 ```
-* Translate
+* Translate + Copy result to clipboard
 ```bash
-ai -t -p gemini -i "翻訳する行"
+ai -t -p gemini -c -i "翻訳する行"
 ```
 * General Prompt
 ```bash
