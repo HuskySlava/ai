@@ -43,7 +43,7 @@ func (p *GeminiProvider) Translate(ctx context.Context, text string, toLanguage 
 	return p.SendRequest(ctx, prompt)
 }
 
-func (p *GeminiProvider) Test(ctx context.Context, text string) (string, error) {
+func (p *GeminiProvider) General(ctx context.Context, text string) (string, error) {
 	prompt := text
 	return p.SendRequest(ctx, prompt)
 }

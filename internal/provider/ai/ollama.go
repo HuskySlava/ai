@@ -40,7 +40,7 @@ func (p *OllamaProvider) Translate(ctx context.Context, text string, toLanguage 
 	return p.SendRequest(ctx, prompt)
 }
 
-func (p *OllamaProvider) Test(ctx context.Context, text string) (string, error) {
+func (p *OllamaProvider) General(ctx context.Context, text string) (string, error) {
 	prompt := text
 	return p.SendRequest(ctx, prompt)
 }
