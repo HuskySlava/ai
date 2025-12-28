@@ -96,9 +96,9 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 
 func main() {
 	// Load environment variables for (dev only)
-	if err := godotenv.Load(); err != nil {
-		if os.Getenv("APP_ENV") == "development" {
-			log.Println("No .env file found — using system environment variables")
+	if os.Getenv("APP_ENV") == "development" {
+		if err := godotenv.Load(); err != nil {
+			log.Println("No .env file found — using system vars")
 		}
 	}
 
@@ -142,9 +142,12 @@ func main() {
 		return
 	}
 
-	err = clipboard.WriteAll(res)
-	if err != nil {
-		fmt.Println("Error copying to clipboard:", err)
+	// Copy to clipboard
+	if cmdFlags.isClipboard {
+		err = clipboard.WriteAll(res)
+		if err != nil {
+			fmt.Println("Error copying to clipboard:", err)
+		}
 	}
 
 	fmt.Println("\n" + res + "\n")
