@@ -65,7 +65,6 @@ models:
   ollama: llama3:latest
 
 prompts:
-  test: ""
   rewrite: |
     You are a professional editor. Improve the following text according to these instructions:
 

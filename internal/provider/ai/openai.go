@@ -43,7 +43,7 @@ func (p *OpenaiProvider) Translate(ctx context.Context, text string, toLanguage 
 	return p.doSendRequest(ctx, prompt, "You are a professional translator.")
 }
 
-func (p *OpenaiProvider) Test(ctx context.Context, text string) (string, error) {
+func (p *OpenaiProvider) General(ctx context.Context, text string) (string, error) {
 	return p.doSendRequest(ctx, text, "You are a concise assistant.")
 }
 

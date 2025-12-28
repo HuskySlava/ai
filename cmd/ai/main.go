@@ -88,7 +88,7 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 
 		res, err = model.Translate(ctx, flags.input, toLanguage)
 	} else {
-		res, err = model.Test(ctx, flags.input)
+		res, err = model.General(ctx, flags.input)
 	}
 
 	return res, err

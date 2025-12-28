@@ -6,7 +6,6 @@ models:
   ollama: mistral-small:latest
 
 prompts:
-  test: ""
   rewrite: |
     You are a professional editor. Improve the following text according to these instructions:
 
