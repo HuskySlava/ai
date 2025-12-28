@@ -142,9 +142,12 @@ func main() {
 		return
 	}
 
-	err = clipboard.WriteAll(res)
-	if err != nil {
-		fmt.Println("Error copying to clipboard:", err)
+	// Copy to clipboard
+	if cmdFlags.isClipboard {
+		err = clipboard.WriteAll(res)
+		if err != nil {
+			fmt.Println("Error copying to clipboard:", err)
+		}
 	}
 
 	fmt.Println("\n" + res + "\n")
