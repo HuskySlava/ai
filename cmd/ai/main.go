@@ -18,6 +18,7 @@ const defaultTargetLanguage = "English"
 type CMDFlags struct {
 	isRewrite   bool
 	isTranslate bool
+	isSummarize bool
 	isClipboard bool
 	provider    string
 	input       string
@@ -29,6 +30,7 @@ func setFlags() *CMDFlags {
 
 	var rewrite, r bool
 	var translate, t bool
+	var summarize, s bool
 	var copyClipboard, c bool
 	var provider, p string
 	var input, i string
@@ -39,6 +41,9 @@ func setFlags() *CMDFlags {
 
 	flag.BoolVar(&translate, "translate", false, "AI translate function flag")
 	flag.BoolVar(&t, "t", false, "AI translate function flag (shorthand)")
+
+	flag.BoolVar(&summarize, "summarize", false, "AI summarize function flag")
+	flag.BoolVar(&s, "s", false, "AI summarize function flag (shorthand)")
 
 	flag.BoolVar(&copyClipboard, "clipboard", false, "Copy result to clipboard automatically")
 	flag.BoolVar(&c, "c", false, "Copy result to clipboard automatically (shorthand)")
@@ -63,6 +68,7 @@ func setFlags() *CMDFlags {
 
 	flags.isRewrite = rewrite || r
 	flags.isTranslate = translate || t
+	flags.isSummarize = summarize || s
 	flags.isClipboard = copyClipboard || c
 	flags.provider = firstNonEmpty(provider, p)
 	flags.input = firstNonEmpty(input, i)
@@ -79,6 +85,7 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 
 	if flags.isRewrite {
 		res, err = model.Rewrite(ctx, flags.input)
+
 	} else if flags.isTranslate {
 
 		toLanguage := flags.language
@@ -87,6 +94,10 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 		}
 
 		res, err = model.Translate(ctx, flags.input, toLanguage)
+
+	} else if flags.isSummarize {
+		res, err = model.Summarize(ctx, flags.input)
+
 	} else {
 		res, err = model.General(ctx, flags.input)
 	}

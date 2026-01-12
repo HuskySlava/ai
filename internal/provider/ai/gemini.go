@@ -43,6 +43,11 @@ func (p *GeminiProvider) Translate(ctx context.Context, text string, toLanguage 
 	return p.SendRequest(ctx, prompt)
 }
 
+func (p *GeminiProvider) Summarize(ctx context.Context, text string) (string, error) {
+	prompt := p.cfg.Prompts.Summarize + " " + text
+	return p.SendRequest(ctx, prompt)
+}
+
 func (p *GeminiProvider) General(ctx context.Context, text string) (string, error) {
 	prompt := text
 	return p.SendRequest(ctx, prompt)

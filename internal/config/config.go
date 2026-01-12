@@ -16,6 +16,7 @@ type Models struct {
 type Prompts struct {
 	Rewrite   string `yaml:"rewrite"`
 	Translate string `yaml:"translate"`
+	Summarize string `yaml:"summarize"`
 }
 
 type BaseEndpoints struct {
