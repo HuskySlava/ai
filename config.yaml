@@ -26,6 +26,7 @@ prompts:
     Text to edit:
 
   translate: "Translate the following text to %s, return only the result: "
+  summarize: "Summarize the following text in a clear, concise way: "
 
 baseEndpoint:
   gemini: https://generativelanguage.googleapis.com/v1beta/models/

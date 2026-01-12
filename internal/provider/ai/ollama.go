@@ -40,6 +40,12 @@ func (p *OllamaProvider) Translate(ctx context.Context, text string, toLanguage 
 	return p.SendRequest(ctx, prompt)
 }
 
+func (p *OllamaProvider) Summarize(ctx context.Context, text string) (string, error) {
+	prompt := fmt.Sprintf(p.cfg.Prompts.Summarize)
+	prompt += " " + text
+	return p.SendRequest(ctx, prompt)
+}
+
 func (p *OllamaProvider) General(ctx context.Context, text string) (string, error) {
 	prompt := text
 	return p.SendRequest(ctx, prompt)
