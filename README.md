@@ -13,6 +13,7 @@
 |---------------|-----------|--------------------------------------------|
 | `--rewrite`   | `-r`      | Rewrite text                               |
 | `--translate` | `-t`      | Translate text                             |
+| `--summarize` | `-s`      | Summarize text                             |
 | `--language`  | `-l`      | Translate target language                  |
 | `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`) |
 | `--input`     | `-i`      | Input text or prompt                       |
@@ -30,6 +31,12 @@ ai -r -p openai -i "A sentence to rewrite"
 ```bash
 ai -t -p gemini -c -i "翻訳する行"
 ```
+
+* Summarize
+```bash
+ai -s -p gemini -i "A sentence to summarize"
+```
+
 * General Prompt
 ```bash
 ai -p ollama -i="Summarize: Go concurrency"
@@ -85,6 +92,7 @@ prompts:
     Text to edit:
 
   translate: "Translate the following text to %s, return only the result: "
+  summarize: "Summarize the following text in a clear, concise way: "
 
 baseEndpoint:
   gemini: https://generativelanguage.googleapis.com/v1beta/models/
