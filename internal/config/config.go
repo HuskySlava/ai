@@ -11,6 +11,7 @@ type Models struct {
 	Gemini string `yaml:"gemini"`
 	Openai string `yaml:"openai"`
 	Ollama string `yaml:"ollama"`
+	Claude string `yaml:"claude"`
 }
 
 type Prompts struct {
