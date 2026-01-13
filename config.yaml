@@ -4,6 +4,7 @@ models:
   gemini: gemini-2.5-flash
   openai: gpt-5-nano
   ollama: mistral-small:latest
+  claude: claude-haiku-4-5-20251001
 
 prompts:
   rewrite: |
