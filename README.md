@@ -9,15 +9,15 @@
 2. Translation
 3. General prompts
 
-| Flag          | Shorthand | Description                                |
-|---------------|-----------|--------------------------------------------|
-| `--rewrite`   | `-r`      | Rewrite text                               |
-| `--translate` | `-t`      | Translate text                             |
-| `--summarize` | `-s`      | Summarize text                             |
-| `--language`  | `-l`      | Translate target language                  |
-| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`) |
-| `--input`     | `-i`      | Input text or prompt                       |
-| `--clipboard` | `-c`      | Copy result to clipboard automatically     |
+| Flag          | Shorthand | Description                                          |
+|---------------|-----------|------------------------------------------------------|
+| `--rewrite`   | `-r`      | Rewrite text                                         |
+| `--translate` | `-t`      | Translate text                                       |
+| `--summarize` | `-s`      | Summarize text                                       |
+| `--language`  | `-l`      | Translate target language                            |
+| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`, `claude`) |
+| `--input`     | `-i`      | Input text or prompt                                 |
+| `--clipboard` | `-c`      | Copy result to clipboard automatically               |
 
 > If --model is not set → defaults to Ollama.
 
@@ -59,17 +59,10 @@ httpTimeoutSeconds: 30
 # Specifies the default model for each provider.
 # must match the provider’s supported models.
 models:
-  gemini: gemini-2.5-flash
-  openai: gpt-5-nano
   ollama: llama3:latest # Local model, download required https://ollama.com/
-
-# Defines the prompts sent to the AI for rewriting, translating, or testing.
-httpTimeoutSeconds: 30
-
-models:
   gemini: gemini-2.5-flash
   openai: gpt-5-nano
-  ollama: llama3:latest
+  claude: claude-haiku-4-5-20251001
 
 prompts:
   rewrite: |
@@ -98,6 +91,7 @@ baseEndpoint:
   gemini: https://generativelanguage.googleapis.com/v1beta/models/
   ollama: http://localhost:11434/api/generate
   openai: https://api.openai.com/v1/chat/completions
+  claude: https://api.anthropic.com/v1/messages
   ```
 
 
