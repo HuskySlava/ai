@@ -133,6 +133,7 @@ func main() {
 	models := map[string]func() (ai.Provider, error){
 		"gemini": func() (ai.Provider, error) { return ai.NewGemini(os.Getenv("GEMINI_API_KEY"), cfg.Models.Gemini) },
 		"openai": func() (ai.Provider, error) { return ai.NewOpenai(os.Getenv("OPENAI_API_KEY"), cfg.Models.Openai) },
+		"claude": func() (ai.Provider, error) { return ai.NewClaude(os.Getenv("CLAUDE_API_KEY"), cfg.Models.Claude) },
 		"ollama": func() (ai.Provider, error) { return ai.NewOllama(cfg.Models.Ollama) },
 		"":       func() (ai.Provider, error) { return ai.NewOllama(cfg.Models.Ollama) },
 	}

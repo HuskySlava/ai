@@ -54,13 +54,13 @@ func (p *ClaudeProvider) General(ctx context.Context, text string) (string, erro
 }
 
 type message struct {
-	Role    string
-	Content string
+	Role    string `json:"role"`
+	Content string `json:"content"`
 }
 type claudeRequest struct {
-	Model     string
-	Messages  []message
-	MaxTokens int
+	Model     string    `json:"model"`
+	Messages  []message `json:"messages"`
+	MaxTokens int       `json:"max_tokens"`
 }
 
 type claudeResponse struct {
@@ -129,7 +129,9 @@ func (p *ClaudeProvider) SendRequest(ctx context.Context, prompt string) (string
 		return "", fmt.Errorf("failed to decode response: %w", err)
 	}
 
-	fmt.Println(result)
+	if len(result.Content) == 0 {
+		return "", fmt.Errorf("no content in response")
+	}
 
-	return "", nil
+	return result.Content[0].Text, nil
 }
