@@ -23,6 +23,7 @@ type BaseEndpoints struct {
 	Gemini string `yaml:"gemini"`
 	Ollama string `yaml:"ollama"`
 	Openai string `yaml:"openai"`
+	Claude string `yaml:"claude"`
 }
 
 type Config struct {
