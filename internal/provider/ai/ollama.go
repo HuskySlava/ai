@@ -69,7 +69,7 @@ func (p *OllamaProvider) SendRequest(ctx context.Context, prompt string) (string
 	url := p.cfg.BaseEndpoints.Ollama
 
 	payload := ollamaRequest{
-		Model:  p.cfg.Models.Ollama,
+		Model:  p.model,
 		Prompt: prompt,
 		Stream: false,
 	}
