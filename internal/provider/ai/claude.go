@@ -63,6 +63,28 @@ type claudeRequest struct {
 	MaxTokens int
 }
 
+type claudeResponse struct {
+	ID           string           `json:"id"`
+	Type         string           `json:"type"`
+	Role         string           `json:"role"`
+	Model        string           `json:"model"`
+	Content      []messageContent `json:"content"`
+	StopReason   string           `json:"stop_reason"`
+	StopSequence *string          `json:"stop_sequence"`
+	Usage        usage            `json:"usage"`
+}
+
+// Content represents a content block in the response
+type messageContent struct {
+	Type string `json:"type"`
+	Text string `json:"text"`
+}
+
+type usage struct {
+	InputTokens  int `json:"input_tokens"`
+	OutputTokens int `json:"output_tokens"`
+}
+
 func (p *ClaudeProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
 	url := p.cfg.BaseEndpoints.Claude
 
@@ -101,6 +123,13 @@ func (p *ClaudeProvider) SendRequest(ctx context.Context, prompt string) (string
 	if resp.StatusCode != http.StatusOK {
 		return "", fmt.Errorf("API returned status: %s", resp.Status)
 	}
+
+	var result claudeResponse
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return "", fmt.Errorf("failed to decode response: %w", err)
+	}
+
+	fmt.Println(result)
 
 	return "", nil
 }
