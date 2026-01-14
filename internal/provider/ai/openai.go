@@ -12,6 +12,7 @@ import (
 )
 
 type OpenaiProvider struct {
+	baseProvider
 	apiKey string
 	model  string
 	client *http.Client
@@ -32,28 +33,24 @@ func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
 	}, nil
 }
 
-func (p *OpenaiProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.doSendRequest(ctx, prompt, "You are a professional text editor.")
+func (p *OpenaiProvider) Rewrite(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptRewrite(input))
 }
 
-func (p *OpenaiProvider) Translate(ctx context.Context, text string, toLanguage string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Translate, toLanguage) // Inject target language to config prompt
-	prompt += " " + text                                       // Add text to be translated
-	return p.doSendRequest(ctx, prompt, "You are a professional translator.")
+func (p *OpenaiProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
-func (p *OpenaiProvider) Summarize(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.doSendRequest(ctx, prompt, "You are a professional text editor.")
+func (p *OpenaiProvider) Summarize(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptSummarize(input))
 }
 
-func (p *OpenaiProvider) General(ctx context.Context, text string) (string, error) {
-	return p.doSendRequest(ctx, text, "You are a concise assistant.")
+func (p *OpenaiProvider) General(ctx context.Context, input string) (string, error) {
+	return p.doSendRequest(ctx, input, "You are a concise assistant.")
 }
 
-func (p *OpenaiProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
-	return p.doSendRequest(ctx, prompt, "You are a concise assistant.")
+func (p *OpenaiProvider) SendRequest(ctx context.Context, input string) (string, error) {
+	return p.doSendRequest(ctx, input, "You are a concise assistant.")
 }
 
 type Message struct {
