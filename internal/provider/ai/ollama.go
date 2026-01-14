@@ -14,7 +14,6 @@ type OllamaProvider struct {
 	baseProvider
 	model  string
 	client *http.Client
-	cfg    *config.Config
 }
 
 func NewOllama(model string) (*OllamaProvider, error) {
@@ -24,9 +23,9 @@ func NewOllama(model string) (*OllamaProvider, error) {
 	}
 
 	return &OllamaProvider{
-		model:  model,
-		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-		cfg:    cfg,
+		baseProvider: baseProvider{cfg: cfg},
+		model:        model,
+		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
 	}, nil
 }
 

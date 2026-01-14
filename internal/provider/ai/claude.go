@@ -15,7 +15,6 @@ type ClaudeProvider struct {
 	apiKey string
 	model  string
 	client *http.Client
-	cfg    *config.Config
 }
 
 func NewClaude(apiKey string, model string) (*ClaudeProvider, error) {
@@ -25,10 +24,10 @@ func NewClaude(apiKey string, model string) (*ClaudeProvider, error) {
 	}
 
 	return &ClaudeProvider{
-		apiKey: apiKey,
-		model:  model,
-		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-		cfg:    cfg,
+		baseProvider: baseProvider{cfg: cfg},
+		apiKey:       apiKey,
+		model:        model,
+		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
 	}, nil
 }
 

@@ -16,7 +16,6 @@ type OpenaiProvider struct {
 	apiKey string
 	model  string
 	client *http.Client
-	cfg    *config.Config
 }
 
 func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
@@ -26,10 +25,10 @@ func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
 	}
 
 	return &OpenaiProvider{
-		apiKey: apiKey,
-		model:  model,
-		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-		cfg:    cfg,
+		baseProvider: baseProvider{cfg: cfg},
+		apiKey:       apiKey,
+		model:        model,
+		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
 	}, nil
 }
 

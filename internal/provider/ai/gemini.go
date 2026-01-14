@@ -16,7 +16,6 @@ type GeminiProvider struct {
 	apiKey string
 	model  string
 	client *http.Client
-	cfg    *config.Config
 }
 
 func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
@@ -26,10 +25,10 @@ func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
 	}
 	// Create a new GeminiProvider and return its address
 	return &GeminiProvider{
-		apiKey: apiKey,
-		model:  model,
-		client: &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
-		cfg:    cfg,
+		baseProvider: baseProvider{cfg: cfg},
+		apiKey:       apiKey,
+		model:        model,
+		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
 	}, nil
 }
 
