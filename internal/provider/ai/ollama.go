@@ -11,6 +11,7 @@ import (
 )
 
 type OllamaProvider struct {
+	baseProvider
 	model  string
 	client *http.Client
 	cfg    *config.Config
@@ -29,26 +30,20 @@ func NewOllama(model string) (*OllamaProvider, error) {
 	}, nil
 }
 
-func (p *OllamaProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *OllamaProvider) Rewrite(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptRewrite(input))
 }
 
-func (p *OllamaProvider) Translate(ctx context.Context, text string, toLanguage string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Translate, toLanguage) // Inject target language to config prompt
-	prompt += " " + text                                       // Add text to be translated
-	return p.SendRequest(ctx, prompt)
+func (p *OllamaProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
-func (p *OllamaProvider) Summarize(ctx context.Context, text string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Summarize)
-	prompt += " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *OllamaProvider) Summarize(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptSummarize(input))
 }
 
-func (p *OllamaProvider) General(ctx context.Context, text string) (string, error) {
-	prompt := text
-	return p.SendRequest(ctx, prompt)
+func (p *OllamaProvider) General(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, input)
 }
 
 type ollamaRequest struct {
