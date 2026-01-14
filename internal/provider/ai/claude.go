@@ -11,6 +11,7 @@ import (
 )
 
 type ClaudeProvider struct {
+	baseProvider
 	apiKey string
 	model  string
 	client *http.Client
@@ -31,26 +32,20 @@ func NewClaude(apiKey string, model string) (*ClaudeProvider, error) {
 	}, nil
 }
 
-func (p *ClaudeProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *ClaudeProvider) Rewrite(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptRewrite(input))
 }
 
-func (p *ClaudeProvider) Translate(ctx context.Context, text string, toLanguage string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Translate, toLanguage) // Inject target language to config prompt
-	prompt += " " + text                                       // Add text to be translated
-	return p.SendRequest(ctx, prompt)
+func (p *ClaudeProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
-func (p *ClaudeProvider) Summarize(ctx context.Context, text string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Summarize)
-	prompt += " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *ClaudeProvider) Summarize(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptSummarize(input))
 }
 
-func (p *ClaudeProvider) General(ctx context.Context, text string) (string, error) {
-	prompt := text
-	return p.SendRequest(ctx, prompt)
+func (p *ClaudeProvider) General(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, input)
 }
 
 type message struct {
