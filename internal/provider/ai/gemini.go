@@ -12,6 +12,7 @@ import (
 )
 
 type GeminiProvider struct {
+	baseProvider
 	apiKey string
 	model  string
 	client *http.Client
@@ -32,25 +33,20 @@ func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
 	}, nil
 }
 
-func (p *GeminiProvider) Rewrite(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Rewrite + " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *GeminiProvider) Rewrite(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptRewrite(input))
 }
 
-func (p *GeminiProvider) Translate(ctx context.Context, text string, toLanguage string) (string, error) {
-	prompt := fmt.Sprintf(p.cfg.Prompts.Translate, toLanguage) // Inject target language to config prompt
-	prompt += " " + text                                       // Add text to be translated
-	return p.SendRequest(ctx, prompt)
+func (p *GeminiProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
-func (p *GeminiProvider) Summarize(ctx context.Context, text string) (string, error) {
-	prompt := p.cfg.Prompts.Summarize + " " + text
-	return p.SendRequest(ctx, prompt)
+func (p *GeminiProvider) Summarize(ctx context.Context, input string) (string, error) {
+	return p.SendRequest(ctx, p.buildPromptSummarize(input))
 }
 
 func (p *GeminiProvider) General(ctx context.Context, text string) (string, error) {
-	prompt := text
-	return p.SendRequest(ctx, prompt)
+	return p.SendRequest(ctx, text)
 }
 
 type geminiRequest struct {
