@@ -107,10 +107,8 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, 
 
 func main() {
 	// Load environment variables for (dev only)
-	if os.Getenv("APP_ENV") == "development" {
-		if err := godotenv.Load(); err != nil {
-			log.Println("No .env file found — using system vars")
-		}
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found — using system vars")
 	}
 
 	// Load config
