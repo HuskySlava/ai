@@ -78,31 +78,20 @@ func setFlags() *CMDFlags {
 }
 
 func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, error) {
-	var (
-		res string
-		err error
-	)
-
-	if flags.isRewrite {
-		res, err = model.Rewrite(ctx, flags.input)
-
-	} else if flags.isTranslate {
-
-		toLanguage := flags.language
-		if toLanguage == "" {
-			toLanguage = defaultTargetLanguage
+	switch {
+	case flags.isRewrite:
+		return model.Rewrite(ctx, flags.input)
+	case flags.isTranslate:
+		lang := flags.language
+		if lang == "" {
+			lang = defaultTargetLanguage
 		}
-
-		res, err = model.Translate(ctx, flags.input, toLanguage)
-
-	} else if flags.isSummarize {
-		res, err = model.Summarize(ctx, flags.input)
-
-	} else {
-		res, err = model.General(ctx, flags.input)
+		return model.Translate(ctx, flags.input, lang)
+	case flags.isSummarize:
+		return model.Summarize(ctx, flags.input)
+	default:
+		return model.General(ctx, flags.input)
 	}
-
-	return res, err
 }
 
 func main() {
