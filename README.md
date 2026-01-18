@@ -107,6 +107,9 @@ baseEndpoint:
   ollama: http://localhost:11434/api/generate
   openai: https://api.openai.com/v1/chat/completions
   claude: https://api.anthropic.com/v1/messages
+
+# Set a limit in KB to files used, avoid accidental large files input
+inputFileLimitKB: 128 # 128KB = ~2000 lines
  ```
 
 
