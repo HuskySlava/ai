@@ -1,6 +1,7 @@
 package main
 
 import (
+	"ai/internal/cli"
 	"ai/internal/config"
 	"ai/internal/provider/ai"
 	"context"
@@ -14,7 +15,7 @@ import (
 
 const defaultTargetLanguage = "English"
 
-func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags, cfg *config.Config) (string, error) {
+func runModel(model ai.Provider, ctx context.Context, flags *cli.CMDFlags, cfg *config.Config) (string, error) {
 
 	var (
 		input string
@@ -22,18 +23,18 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags, cfg *conf
 	)
 
 	// Check for file input
-	if flags.file != "" {
-		input, err = ReadFile(flags.file, cfg.InputFileLimitKB)
+	if flags.File != "" {
+		input, err = cli.ReadFile(flags.File, cfg.InputFileLimitKB)
 		if err != nil {
 			return "", err
 		}
 
 		// Concatenate text input with file
-		if flags.input != "" {
-			input = flags.input + "\n" + input
+		if flags.Input != "" {
+			input = flags.Input + "\n" + input
 		}
 	} else {
-		input = flags.input
+		input = flags.Input
 	}
 
 	if input == "" {
@@ -42,15 +43,15 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags, cfg *conf
 
 	// Handle conditional flags
 	switch {
-	case flags.isRewrite:
+	case flags.IsRewrite:
 		return model.Rewrite(ctx, input)
-	case flags.isTranslate:
-		lang := flags.language
+	case flags.IsTranslate:
+		lang := flags.Language
 		if lang == "" {
 			lang = defaultTargetLanguage
 		}
 		return model.Translate(ctx, input, lang)
-	case flags.isSummarize:
+	case flags.IsSummarize:
 		return model.Summarize(ctx, input)
 	default:
 		return model.General(ctx, input)
@@ -70,7 +71,7 @@ func main() {
 	}
 
 	// Set CMD flags
-	cmdFlags := SetFlags()
+	cmdFlags := cli.SetFlags()
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
 	defer cancel()
@@ -83,7 +84,7 @@ func main() {
 		"":       func() (ai.Provider, error) { return ai.NewOllama(cfg.Models.Ollama) },
 	}
 
-	newModel, ok := models[cmdFlags.provider]
+	newModel, ok := models[cmdFlags.Provider]
 	if !ok {
 		log.Fatal("Model not implemented")
 	}
@@ -100,7 +101,7 @@ func main() {
 	}
 
 	// Copy to clipboard
-	if cmdFlags.isClipboard {
+	if cmdFlags.IsClipboard {
 		err = clipboard.WriteAll(res)
 		if err != nil {
 			fmt.Println("Error copying to clipboard:", err)

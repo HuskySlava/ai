@@ -1,16 +1,16 @@
-package main
+package cli
 
 import "flag"
 
 type CMDFlags struct {
-	isRewrite   bool
-	isTranslate bool
-	isSummarize bool
-	isClipboard bool
-	provider    string
-	input       string
-	language    string
-	file        string
+	IsRewrite   bool
+	IsTranslate bool
+	IsSummarize bool
+	IsClipboard bool
+	Provider    string
+	Input       string
+	Language    string
+	File        string
 }
 
 func SetFlags() *CMDFlags {
@@ -58,14 +58,14 @@ func SetFlags() *CMDFlags {
 		return b
 	}
 
-	flags.isRewrite = rewrite || r
-	flags.isTranslate = translate || t
-	flags.isSummarize = summarize || s
-	flags.isClipboard = copyClipboard || c
-	flags.provider = firstNonEmpty(provider, p)
-	flags.input = firstNonEmpty(input, i)
-	flags.language = firstNonEmpty(language, l)
-	flags.file = firstNonEmpty(file, f)
+	flags.IsRewrite = rewrite || r
+	flags.IsTranslate = translate || t
+	flags.IsSummarize = summarize || s
+	flags.IsClipboard = copyClipboard || c
+	flags.Provider = firstNonEmpty(provider, p)
+	flags.Input = firstNonEmpty(input, i)
+	flags.Language = firstNonEmpty(language, l)
+	flags.File = firstNonEmpty(file, f)
 
 	return flags
 }
