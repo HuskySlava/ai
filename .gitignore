@@ -8,6 +8,7 @@ cp-local-prod.sh
 # IDE
 .idea
 tmp
+test.txt
 
 # Go build output
 /bin/

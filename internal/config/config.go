@@ -32,6 +32,7 @@ type Config struct {
 	Models             Models        `yaml:"models"`
 	Prompts            Prompts       `yaml:"prompts"`
 	BaseEndpoints      BaseEndpoints `yaml:"baseEndpoint"`
+	InputFileLimitKB   int           `yaml:"inputFileLimitKB"`
 }
 
 func Load() (*Config, error) {

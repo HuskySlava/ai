@@ -14,20 +14,41 @@ import (
 
 const defaultTargetLanguage = "English"
 
-func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags) (string, error) {
+func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags, cfg *config.Config) (string, error) {
+
+	var (
+		input string
+		err   error
+	)
+
+	// Check for file input
+	if flags.file != "" {
+		input, err = ReadFile(flags.file, cfg.InputFileLimitKB)
+		if err != nil {
+			return "", err
+		}
+	} else {
+		input = flags.input
+	}
+
+	if input == "" {
+		return "", fmt.Errorf("missing input")
+	}
+
+	// Handle conditional flags
 	switch {
 	case flags.isRewrite:
-		return model.Rewrite(ctx, flags.input)
+		return model.Rewrite(ctx, input)
 	case flags.isTranslate:
 		lang := flags.language
 		if lang == "" {
 			lang = defaultTargetLanguage
 		}
-		return model.Translate(ctx, flags.input, lang)
+		return model.Translate(ctx, input, lang)
 	case flags.isSummarize:
-		return model.Summarize(ctx, flags.input)
+		return model.Summarize(ctx, input)
 	default:
-		return model.General(ctx, flags.input)
+		return model.General(ctx, input)
 	}
 }
 
@@ -45,11 +66,6 @@ func main() {
 
 	// Set CMD flags
 	cmdFlags := SetFlags()
-
-	if cmdFlags.input == "" {
-		log.Println("Missing prompt")
-		return
-	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(cfg.HttpTimeoutSeconds)*time.Second)
 	defer cancel()
@@ -72,7 +88,7 @@ func main() {
 		log.Fatalf("Error creating model: %v", err)
 	}
 
-	res, err := runModel(model, ctx, cmdFlags)
+	res, err := runModel(model, ctx, cmdFlags, cfg)
 	if err != nil {
 		log.Fatalf("Error running model: %v", err)
 		return
