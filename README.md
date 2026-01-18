@@ -56,10 +56,15 @@ ai -f question.txt
 ai -i "Sort numbers" -f numbers.csv
 ``````
 
-### Required Environment Variables
+### AI Providers Required Environment Variables 
 ```.env
+# Required for OpenAI usage
 OPENAI_API_KEY=sk-xxx
+
+# Required for Gemini usage
 GEMINI_API_KEY=xyz
+
+# Required for Claude usage
 CLAUDE_API_KEY=xyz
 ```
 
