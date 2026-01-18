@@ -1,6 +1,6 @@
 ## AI CLI Tool
 
-> **Note:** Ollama is a local AI model manager and inference engine that allows you to run large language models on your own machine. It must be **installed and configured separately**. See [Ollama installation guide](https://ollama.com/).  
+> **Note:** Ollama is a local AI model manager and inference engine that allows you to run large language models on your own machine. It must be **installed and configured separately**. See [Download Ollama](https://ollama.com/download).  
 > If no `--provider` flag is specified, Ollama will be used as the default provider.
 
 ### CLI interface
