@@ -12,15 +12,16 @@ This CLI tool supports:
 3. Summarization
 4. General prompts
 
-| Flag          | Shorthand | Description                                          |
-|---------------|-----------|------------------------------------------------------|
-| `--rewrite`   | `-r`      | Rewrite text                                         |
-| `--translate` | `-t`      | Translate text                                       |
-| `--summarize` | `-s`      | Summarize text                                       |
-| `--language`  | `-l`      | Target language for translation                      |
-| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`, `claude`) |
-| `--input`     | `-i`      | Input text or prompt                                 |
-| `--clipboard` | `-c`      | Copy result to clipboard automatically               |
+| Flag          | Shorthand | Description                                                                             |
+|---------------|-----------|-----------------------------------------------------------------------------------------|
+| `--rewrite`   | `-r`      | Rewrite text                                                                            |
+| `--translate` | `-t`      | Translate text                                                                          |
+| `--summarize` | `-s`      | Summarize text                                                                          |
+| `--language`  | `-l`      | Target language for translation                                                         |
+| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`, `claude`)                                    |
+| `--input`     | `-i`      | Input prompt. If used with --file, the text will be concatenated with the file content  |
+| `--file`      | `-f`      | File for input (plaintext only)                                                         |
+| `--clipboard` | `-c`      | Copy result to clipboard automatically                                                  |
 
 > If --provider is not set → defaults to **Ollama**.
 
@@ -44,6 +45,16 @@ ai -s -p gemini -i "A sentence to summarize"
 ```bash
 ai -p ollama -i "Summarize: Go concurrency"
 ```
+
+* File as input
+```bash
+ai -f question.txt
+```
+
+* File and input
+```bash
+ai -i "Sort numbers" -f numbers.csv
+``````
 
 ### Required Environment Variables
 ```.env
