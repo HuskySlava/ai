@@ -27,6 +27,11 @@ func runModel(model ai.Provider, ctx context.Context, flags *CMDFlags, cfg *conf
 		if err != nil {
 			return "", err
 		}
+
+		// Concatenate text input with file
+		if flags.input != "" {
+			input = flags.input + "\n" + input
+		}
 	} else {
 		input = flags.input
 	}
