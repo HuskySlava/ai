@@ -108,9 +108,16 @@ func main() {
 		}
 	}
 
-	const cyberCyan = "\033[96m" // bright cyan
-	const reset = "\033[0m"
+	if cmdFlags.ToFile != "" {
+		err = cli.WriteFile(cmdFlags.ToFile, []byte(res))
+		if err != nil {
+			log.Fatalf("Error writing file: %v", err)
+		}
+	} else {
+		const cyberCyan = "\033[96m" // bright cyan
+		const reset = "\033[0m"
 
-	fmt.Println("\n" + cyberCyan + res + reset + "\n")
+		fmt.Println("\n" + cyberCyan + res + reset + "\n")
+	}
 
 }
