@@ -24,3 +24,11 @@ func ReadFile(path string, sizeLimitKB int) (string, error) {
 
 	return string(file), nil
 }
+
+func WriteFile(name string, data []byte) error {
+	err := os.WriteFile(name, data, 0644)
+	if err != nil {
+		return fmt.Errorf("error writing file %w", err)
+	}
+	return nil
+}
