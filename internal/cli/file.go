@@ -35,5 +35,6 @@ func WriteFile(name string, data []byte) error {
 	if err := os.WriteFile(name, data, 0644); err != nil {
 		return fmt.Errorf("error writing file: %w", err)
 	}
+
 	return nil
 }
