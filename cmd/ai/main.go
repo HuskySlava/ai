@@ -108,6 +108,7 @@ func main() {
 		}
 	}
 
+	// Output to a file standard output (stdout)
 	if cmdFlags.ToFile != "" {
 		err = cli.WriteFile(cmdFlags.ToFile, []byte(res))
 		if err != nil {
