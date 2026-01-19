@@ -11,6 +11,7 @@ type CMDFlags struct {
 	Input       string
 	Language    string
 	File        string
+	ToFile      string
 }
 
 func SetFlags() *CMDFlags {
@@ -24,6 +25,7 @@ func SetFlags() *CMDFlags {
 	var input, i string
 	var language, l string
 	var file, f string
+	var toFile, tf string
 
 	flag.BoolVar(&rewrite, "rewrite", false, "AI rewrite function flag")
 	flag.BoolVar(&r, "r", false, "AI rewrite function flag (shorthand)")
@@ -49,6 +51,9 @@ func SetFlags() *CMDFlags {
 	flag.StringVar(&file, "file", "", "Use file as input")
 	flag.StringVar(&f, "f", "", "Use file as input (shorthand)")
 
+	flag.StringVar(&toFile, "tofile", "", "Output to a file")
+	flag.StringVar(&tf, "tf", "", "Output to a file (shorthand)")
+
 	flag.Parse()
 
 	firstNonEmpty := func(a, b string) string {
@@ -66,6 +71,7 @@ func SetFlags() *CMDFlags {
 	flags.Input = firstNonEmpty(input, i)
 	flags.Language = firstNonEmpty(language, l)
 	flags.File = firstNonEmpty(file, f)
+	flags.ToFile = firstNonEmpty(toFile, tf)
 
 	return flags
 }
