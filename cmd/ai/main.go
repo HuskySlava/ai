@@ -114,5 +114,3 @@ func main() {
 	fmt.Println("\n" + cyberCyan + res + reset + "\n")
 
 }
-
-// TEST COMMIT
