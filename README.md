@@ -62,6 +62,11 @@ ai -i "Sort numbers" -f numbers.csv
 ai -i "Reply only in Markdown format; provide a Golang ‘Hello, World!’ example" -tf some/folder/test.md
 ``````
 
+* Chain flags example
+```bash
+ai ai -p openai -i "Fix the bug in my javascript; reply only with corrected JavaScript" -f bug.js -tf fixed.js
+``````
+
 ### AI Providers Required Environment Variables 
 ```.env
 # Required for OpenAI usage
