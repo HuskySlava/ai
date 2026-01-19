@@ -12,16 +12,17 @@ This CLI tool supports:
 3. Summarization
 4. General prompts
 
-| Flag          | Shorthand | Description                                                                             |
-|---------------|-----------|-----------------------------------------------------------------------------------------|
-| `--rewrite`   | `-r`      | Rewrite text                                                                            |
-| `--translate` | `-t`      | Translate text                                                                          |
-| `--summarize` | `-s`      | Summarize text                                                                          |
-| `--language`  | `-l`      | Target language for translation                                                         |
-| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`, `claude`)                                    |
-| `--input`     | `-i`      | Input prompt. If used with --file, the text will be concatenated with the file content  |
-| `--file`      | `-f`      | File for input (plaintext only)                                                         |
-| `--clipboard` | `-c`      | Copy result to clipboard automatically                                                  |
+| Flag          | Shorthand | Description                                                                            |
+|---------------|-----------|----------------------------------------------------------------------------------------|
+| `--rewrite`   | `-r`      | Rewrite text                                                                           |
+| `--translate` | `-t`      | Translate text                                                                         |
+| `--summarize` | `-s`      | Summarize text                                                                         |
+| `--language`  | `-l`      | Target language for translation                                                        |
+| `--provider`  | `-p`      | AI provider (`ollama`, `openai`, `gemini`, `claude`)                                   |
+| `--input`     | `-i`      | Input prompt. If used with --file, the text will be concatenated with the file content |
+| `--file`      | `-f`      | File for input (plaintext only)                                                        |
+| `--tofile`    | `-tf`     | Output file path/name                                                                  |
+| `--clipboard` | `-c`      | Copy result to clipboard automatically                                                 |
 
 > If --provider is not set → defaults to **Ollama**.
 
@@ -54,6 +55,11 @@ ai -f question.txt
 * File and input
 ```bash
 ai -i "Sort numbers" -f numbers.csv
+``````
+
+* Output to a file
+```bash
+ai -i "Reply only in Markdown format; provide a Golang ‘Hello, World!’ example" -tf some/folder/test.md
 ``````
 
 ### AI Providers Required Environment Variables 
