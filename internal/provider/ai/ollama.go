@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type OllamaProvider struct {
@@ -20,7 +19,7 @@ func NewOllama(model string, cfg *config.Config) (*OllamaProvider, error) {
 	return &OllamaProvider{
 		baseProvider: baseProvider{cfg: cfg},
 		model:        model,
-		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
+		client:       &http.Client{},
 	}, nil
 }
 

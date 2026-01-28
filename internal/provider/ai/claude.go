@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type ClaudeProvider struct {
@@ -25,7 +24,7 @@ func NewClaude(apiKey string, model string, cfg *config.Config) (*ClaudeProvider
 		baseProvider: baseProvider{cfg: cfg},
 		apiKey:       apiKey,
 		model:        model,
-		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
+		client:       &http.Client{},
 	}, nil
 }
 

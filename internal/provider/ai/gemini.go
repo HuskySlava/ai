@@ -8,7 +8,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type GeminiProvider struct {
@@ -27,7 +26,7 @@ func NewGemini(apiKey string, model string, cfg *config.Config) (*GeminiProvider
 		baseProvider: baseProvider{cfg: cfg},
 		apiKey:       apiKey,
 		model:        model,
-		client:       &http.Client{Timeout: time.Duration(cfg.HttpTimeoutSeconds) * time.Second},
+		client:       &http.Client{},
 	}, nil
 }
 
