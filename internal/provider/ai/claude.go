@@ -103,7 +103,7 @@ func (p *ClaudeProvider) sendRequest(ctx context.Context, prompt string) (string
 
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("anthropic-version", "2023-06-01") // TODO: Configurable
-	req.Header.Set("x-api-key", p.apiKey)             // TODO: Configurable
+	req.Header.Set("x-api-key", p.apiKey)
 
 	resp, err := p.client.Do(req)
 	if err != nil {
