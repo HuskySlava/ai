@@ -91,5 +91,5 @@ func (p *OllamaProvider) SendRequest(ctx context.Context, prompt string) (string
 		return "", fmt.Errorf("failed to decode response: %w", err)
 	}
 
-	return result.Response, err
+	return result.Response, nil
 }
