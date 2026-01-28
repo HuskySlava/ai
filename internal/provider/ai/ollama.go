@@ -40,9 +40,9 @@ func (p *OllamaProvider) General(ctx context.Context, input string) (string, err
 }
 
 type ollamaRequest struct {
-	Model  string
-	Prompt string
-	Stream bool
+	Model  string `json:"model"`
+	Prompt string `json:"prompt"`
+	Stream bool   `json:"stream"`
 }
 
 type ollamaResponse struct {
