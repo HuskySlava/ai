@@ -43,11 +43,11 @@ func (p *OpenaiProvider) Summarize(ctx context.Context, input string) (string, e
 }
 
 func (p *OpenaiProvider) General(ctx context.Context, input string) (string, error) {
-	return p.dosendRequest(ctx, input, "You are a concise assistant.")
+	return p.doSendRequest(ctx, input, "You are a concise assistant.")
 }
 
 func (p *OpenaiProvider) sendRequest(ctx context.Context, input string) (string, error) {
-	return p.dosendRequest(ctx, input, "You are a concise assistant.")
+	return p.doSendRequest(ctx, input, "You are a concise assistant.")
 }
 
 type Message struct {
@@ -75,7 +75,7 @@ type ChatResponse struct {
 	Choices []ChatChoice `json:"choices"`
 }
 
-func (p *OpenaiProvider) dosendRequest(ctx context.Context, prompt string, systemRole string) (string, error) {
+func (p *OpenaiProvider) doSendRequest(ctx context.Context, prompt string, systemRole string) (string, error) {
 
 	payload := ChatRequest{
 		Model: p.model,
