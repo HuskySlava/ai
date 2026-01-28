@@ -19,7 +19,7 @@ type ClaudeProvider struct {
 
 func NewClaude(apiKey string, model string, cfg *config.Config) (*ClaudeProvider, error) {
 	if apiKey == "" {
-		return nil, fmt.Errorf("missing CLAUDE_API_KEY enviroment variable")
+		return nil, fmt.Errorf("missing CLAUDE_API_KEY environment variable")
 	}
 	return &ClaudeProvider{
 		baseProvider: baseProvider{cfg: cfg},

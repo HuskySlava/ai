@@ -20,7 +20,7 @@ type OpenaiProvider struct {
 
 func NewOpenai(apiKey string, model string, cfg *config.Config) (*OpenaiProvider, error) {
 	if apiKey == "" {
-		return nil, fmt.Errorf("missing OPENAI_API_KEY enviroment variable")
+		return nil, fmt.Errorf("missing OPENAI_API_KEY environment variable")
 	}
 	return &OpenaiProvider{
 		baseProvider: baseProvider{cfg: cfg},
