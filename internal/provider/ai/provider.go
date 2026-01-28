@@ -11,7 +11,6 @@ type Provider interface {
 	Translate(ctx context.Context, text string, toLanguage string) (string, error)
 	Summarize(ctx context.Context, text string) (string, error)
 	General(ctx context.Context, text string) (string, error)
-	SendRequest(ctx context.Context, prompt string) (string, error)
 }
 
 type baseProvider struct {

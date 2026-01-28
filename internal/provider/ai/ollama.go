@@ -25,19 +25,19 @@ func NewOllama(model string, cfg *config.Config) (*OllamaProvider, error) {
 }
 
 func (p *OllamaProvider) Rewrite(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptRewrite(input))
+	return p.sendRequest(ctx, p.buildPromptRewrite(input))
 }
 
 func (p *OllamaProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
+	return p.sendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
 func (p *OllamaProvider) Summarize(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptSummarize(input))
+	return p.sendRequest(ctx, p.buildPromptSummarize(input))
 }
 
 func (p *OllamaProvider) General(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, input)
+	return p.sendRequest(ctx, input)
 }
 
 type ollamaRequest struct {
@@ -53,7 +53,7 @@ type ollamaResponse struct {
 	Done      bool   `json:"done"`
 }
 
-func (p *OllamaProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *OllamaProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
 
 	url := p.cfg.BaseEndpoints.Ollama
 

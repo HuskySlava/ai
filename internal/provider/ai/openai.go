@@ -31,23 +31,23 @@ func NewOpenai(apiKey string, model string, cfg *config.Config) (*OpenaiProvider
 }
 
 func (p *OpenaiProvider) Rewrite(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptRewrite(input))
+	return p.sendRequest(ctx, p.buildPromptRewrite(input))
 }
 
 func (p *OpenaiProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
+	return p.sendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
 func (p *OpenaiProvider) Summarize(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptSummarize(input))
+	return p.sendRequest(ctx, p.buildPromptSummarize(input))
 }
 
 func (p *OpenaiProvider) General(ctx context.Context, input string) (string, error) {
-	return p.doSendRequest(ctx, input, "You are a concise assistant.")
+	return p.dosendRequest(ctx, input, "You are a concise assistant.")
 }
 
-func (p *OpenaiProvider) SendRequest(ctx context.Context, input string) (string, error) {
-	return p.doSendRequest(ctx, input, "You are a concise assistant.")
+func (p *OpenaiProvider) sendRequest(ctx context.Context, input string) (string, error) {
+	return p.dosendRequest(ctx, input, "You are a concise assistant.")
 }
 
 type Message struct {
@@ -75,7 +75,7 @@ type ChatResponse struct {
 	Choices []ChatChoice `json:"choices"`
 }
 
-func (p *OpenaiProvider) doSendRequest(ctx context.Context, prompt string, systemRole string) (string, error) {
+func (p *OpenaiProvider) dosendRequest(ctx context.Context, prompt string, systemRole string) (string, error) {
 
 	payload := ChatRequest{
 		Model: p.model,

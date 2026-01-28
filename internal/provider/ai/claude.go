@@ -30,19 +30,19 @@ func NewClaude(apiKey string, model string, cfg *config.Config) (*ClaudeProvider
 }
 
 func (p *ClaudeProvider) Rewrite(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptRewrite(input))
+	return p.sendRequest(ctx, p.buildPromptRewrite(input))
 }
 
 func (p *ClaudeProvider) Translate(ctx context.Context, input string, toLanguage string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
+	return p.sendRequest(ctx, p.buildPromptTranslate(input, toLanguage))
 }
 
 func (p *ClaudeProvider) Summarize(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, p.buildPromptSummarize(input))
+	return p.sendRequest(ctx, p.buildPromptSummarize(input))
 }
 
 func (p *ClaudeProvider) General(ctx context.Context, input string) (string, error) {
-	return p.SendRequest(ctx, input)
+	return p.sendRequest(ctx, input)
 }
 
 type message struct {
@@ -77,7 +77,7 @@ type usage struct {
 	OutputTokens int `json:"output_tokens"`
 }
 
-func (p *ClaudeProvider) SendRequest(ctx context.Context, prompt string) (string, error) {
+func (p *ClaudeProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
 	url := p.cfg.BaseEndpoints.Claude
 
 	payload := claudeRequest{
