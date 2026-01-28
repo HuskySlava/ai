@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -104,7 +105,8 @@ func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("API returned status: %s", resp.Status)
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("API error %d: %s", resp.StatusCode, string(bodyBytes))
 	}
 
 	// Parse Response

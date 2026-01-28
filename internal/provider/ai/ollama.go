@@ -6,6 +6,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -82,7 +83,8 @@ func (p *OllamaProvider) sendRequest(ctx context.Context, prompt string) (string
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("API returned status: %s", resp.Status)
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return "", fmt.Errorf("API error %d: %s", resp.StatusCode, string(bodyBytes))
 	}
 
 	var result ollamaResponse
