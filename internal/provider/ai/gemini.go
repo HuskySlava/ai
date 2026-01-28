@@ -19,6 +19,9 @@ type GeminiProvider struct {
 }
 
 func NewGemini(apiKey string, model string, cfg *config.Config) (*GeminiProvider, error) {
+	if apiKey == "" {
+		return nil, fmt.Errorf("missing GEMINI_API_KEY enviroment variable")
+	}
 	// Create a new GeminiProvider and return its address
 	return &GeminiProvider{
 		baseProvider: baseProvider{cfg: cfg},
