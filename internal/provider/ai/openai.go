@@ -18,12 +18,7 @@ type OpenaiProvider struct {
 	client *http.Client
 }
 
-func NewOpenai(apiKey string, model string) (*OpenaiProvider, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		return nil, err
-	}
-
+func NewOpenai(apiKey string, model string, cfg *config.Config) (*OpenaiProvider, error) {
 	return &OpenaiProvider{
 		baseProvider: baseProvider{cfg: cfg},
 		apiKey:       apiKey,

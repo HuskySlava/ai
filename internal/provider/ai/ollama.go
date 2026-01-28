@@ -16,12 +16,7 @@ type OllamaProvider struct {
 	client *http.Client
 }
 
-func NewOllama(model string) (*OllamaProvider, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		return nil, err
-	}
-
+func NewOllama(model string, cfg *config.Config) (*OllamaProvider, error) {
 	return &OllamaProvider{
 		baseProvider: baseProvider{cfg: cfg},
 		model:        model,

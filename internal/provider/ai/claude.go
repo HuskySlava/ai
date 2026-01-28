@@ -17,12 +17,7 @@ type ClaudeProvider struct {
 	client *http.Client
 }
 
-func NewClaude(apiKey string, model string) (*ClaudeProvider, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		return nil, err
-	}
-
+func NewClaude(apiKey string, model string, cfg *config.Config) (*ClaudeProvider, error) {
 	return &ClaudeProvider{
 		baseProvider: baseProvider{cfg: cfg},
 		apiKey:       apiKey,

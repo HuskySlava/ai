@@ -18,11 +18,7 @@ type GeminiProvider struct {
 	client *http.Client
 }
 
-func NewGemini(apiKey string, model string) (*GeminiProvider, error) {
-	cfg, err := config.Load()
-	if err != nil {
-		return nil, err
-	}
+func NewGemini(apiKey string, model string, cfg *config.Config) (*GeminiProvider, error) {
 	// Create a new GeminiProvider and return its address
 	return &GeminiProvider{
 		baseProvider: baseProvider{cfg: cfg},
