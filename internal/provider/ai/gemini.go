@@ -68,11 +68,10 @@ type geminiResponse struct {
 
 func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string, error) {
 	// Endpoint construction
-	// Example: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=XYZ
+	// Example: https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent
 	url := fmt.Sprintf(
-		p.cfg.BaseEndpoints.Gemini+"%s:generateContent?key=%s",
+		p.cfg.BaseEndpoints.Gemini+"%s:generateContent",
 		p.model,
-		p.apiKey,
 	)
 
 	// Prepare JSON payload
@@ -96,6 +95,8 @@ func (p *GeminiProvider) sendRequest(ctx context.Context, prompt string) (string
 		return "", fmt.Errorf("failed to create request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
+
+	req.Header.Set("x-goog-api-key", p.apiKey)
 
 	// Execute
 	resp, err := p.client.Do(req)
