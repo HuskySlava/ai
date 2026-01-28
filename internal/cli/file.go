@@ -7,13 +7,18 @@ import (
 )
 
 func ReadFile(path string, sizeLimitKB int) (string, error) {
-	file, err := os.ReadFile(path)
+	info, err := os.Stat(path)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file: %w", err)
 	}
 
-	if len(file) > sizeLimitKB*1024 {
-		return "", fmt.Errorf("file too large (%d bytes)", len(file))
+	if info.Size() > int64(sizeLimitKB*1024) {
+		return "", fmt.Errorf("file too large (%d bytes)", info.Size())
+	}
+
+	file, err := os.ReadFile(path)
+	if err != nil {
+		return "", fmt.Errorf("failed to read file: %w", err)
 	}
 
 	// Check nul bytes, verify accidental executable not passed
