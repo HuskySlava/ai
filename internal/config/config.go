@@ -38,7 +38,6 @@ type Config struct {
 func Load() (*Config, error) {
 	exePath, err := os.Executable()
 	if err != nil {
-		log.Println("Error getting executable path:", err)
 		return nil, err
 	}
 
@@ -61,7 +60,6 @@ func Load() (*Config, error) {
 
 	var cfg *Config
 	if err := yaml.Unmarshal(res, &cfg); err != nil {
-		log.Println("Error reading YAML:", err)
 		return nil, err
 	}
 
