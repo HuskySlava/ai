@@ -97,7 +97,6 @@ func main() {
 	res, err := runModel(model, ctx, cmdFlags, cfg)
 	if err != nil {
 		log.Fatalf("Error running model: %v", err)
-		return
 	}
 
 	// Copy to clipboard
