@@ -8,35 +8,58 @@ import (
 	"fmt"
 	"github.com/atotto/clipboard"
 	"github.com/joho/godotenv"
+	"io"
 	"log"
 	"os"
+	"strings"
 	"time"
 )
 
 const defaultTargetLanguage = "English"
 
+func readStdin() (string, error) {
+	info, err := os.Stdin.Stat()
+	if err != nil {
+		return "", err
+	}
+	// ModeCharDevice is set when stdin is a terminal (not a pipe)
+	if info.Mode()&os.ModeCharDevice != 0 {
+		return "", nil
+	}
+	data, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return "", fmt.Errorf("failed to read stdin: %w", err)
+	}
+	return string(data), nil
+}
+
 func runModel(model ai.Provider, ctx context.Context, flags *cli.CMDFlags, cfg *config.Config) (string, error) {
 
-	var (
-		input string
-		err   error
-	)
+	var inputParts []string
 
-	// Check for file input
+	if flags.Input != "" {
+		inputParts = append(inputParts, flags.Input)
+	}
+
 	if flags.File != "" {
-		input, err = cli.ReadFile(flags.File, cfg.InputFileLimitKB)
+		fileContent, err := cli.ReadFile(flags.File, cfg.InputFileLimitKB)
 		if err != nil {
 			return "", err
 		}
-
-		// Concatenate text input with file
-		if flags.Input != "" {
-			input = flags.Input + "\n" + input
-		}
-	} else {
-		input = flags.Input
+		inputParts = append(inputParts, fileContent)
 	}
 
+	if len(inputParts) == 0 {
+		stdinContent, err := readStdin()
+		if err != nil {
+			return "", err
+		}
+		if stdinContent != "" {
+			inputParts = append(inputParts, stdinContent)
+		}
+	}
+
+	input := strings.Join(inputParts, "\n")
 	if input == "" {
 		return "", fmt.Errorf("missing input")
 	}
