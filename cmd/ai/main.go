@@ -17,7 +17,7 @@ import (
 
 const defaultTargetLanguage = "English"
 
-func readStdin() (string, error) {
+func readStdin(sizeLimitKB int) (string, error) {
 	info, err := os.Stdin.Stat()
 	if err != nil {
 		return "", err
@@ -26,9 +26,13 @@ func readStdin() (string, error) {
 	if info.Mode()&os.ModeCharDevice != 0 {
 		return "", nil
 	}
-	data, err := io.ReadAll(os.Stdin)
+	sizeLimit := int64(sizeLimitKB * 1024)
+	data, err := io.ReadAll(io.LimitReader(os.Stdin, sizeLimit+1))
 	if err != nil {
 		return "", fmt.Errorf("failed to read stdin: %w", err)
+	}
+	if int64(len(data)) > sizeLimit {
+		return "", fmt.Errorf("stdin too large (limit %dKB)", sizeLimitKB)
 	}
 	return string(data), nil
 }
@@ -50,7 +54,7 @@ func runModel(model ai.Provider, ctx context.Context, flags *cli.CMDFlags, cfg *
 	}
 
 	if len(inputParts) == 0 {
-		stdinContent, err := readStdin()
+		stdinContent, err := readStdin(cfg.InputFileLimitKB)
 		if err != nil {
 			return "", err
 		}
