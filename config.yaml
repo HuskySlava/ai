@@ -36,3 +36,7 @@ baseEndpoint:
   claude: https://api.anthropic.com/v1/messages
 
 inputFileLimitKB: 128
+
+claude:
+  MaxTokens: 1024
+  APIVersion: "2023-06-01"

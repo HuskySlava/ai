@@ -27,12 +27,18 @@ type BaseEndpoints struct {
 	Claude string `yaml:"claude"`
 }
 
+type Claude struct {
+	MaxTokens  int    `yaml:"MaxTokens"`
+	APIVersion string `yaml:"APIVersion"`
+}
+
 type Config struct {
 	HttpTimeoutSeconds int           `yaml:"httpTimeoutSeconds"`
 	Models             Models        `yaml:"models"`
 	Prompts            Prompts       `yaml:"prompts"`
 	BaseEndpoints      BaseEndpoints `yaml:"baseEndpoint"`
 	InputFileLimitKB   int           `yaml:"inputFileLimitKB"`
+	Claude             Claude        `yaml:"claude"`
 }
 
 func Load() (*Config, error) {
