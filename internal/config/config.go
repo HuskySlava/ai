@@ -32,6 +32,10 @@ type Claude struct {
 	APIVersion string `yaml:"APIVersion"`
 }
 
+type Openai struct {
+	Temperature float64 `yaml:"Temperature"`
+}
+
 type Config struct {
 	HttpTimeoutSeconds int           `yaml:"httpTimeoutSeconds"`
 	Models             Models        `yaml:"models"`
@@ -39,6 +43,7 @@ type Config struct {
 	BaseEndpoints      BaseEndpoints `yaml:"baseEndpoint"`
 	InputFileLimitKB   int           `yaml:"inputFileLimitKB"`
 	Claude             Claude        `yaml:"claude"`
+	Openai             Openai        `yaml:"openai"`
 }
 
 func Load() (*Config, error) {

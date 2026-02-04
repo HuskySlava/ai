@@ -40,3 +40,6 @@ inputFileLimitKB: 128
 claude:
   MaxTokens: 1024
   APIVersion: "2023-06-01"
+
+openai:
+  Temperature: 1

@@ -78,7 +78,7 @@ func (p *OpenaiProvider) sendRequest(ctx context.Context, prompt string) (string
 			{Role: "system", Content: "You are a concise assistant."},
 			{Role: "user", Content: prompt},
 		},
-		Temperature: 1,
+		Temperature: p.cfg.Openai.Temperature,
 	}
 
 	jsonData, err := json.Marshal(payload)
